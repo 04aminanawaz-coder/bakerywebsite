@@ -8,10 +8,10 @@ function App() {
 
   return (
     <>
-  <div>
+\
     <navbar/>
    <button/>
-  </div>
+ 
     </>
   )
 }
