@@ -1,18 +1,27 @@
 import { useState } from 'react'
 import './App.css'
-import navbar from './componenets/navbar'
-import button from './componenets/button'
+import Navbar from './componenets/Navbar'
 
 
+// import ChooseUs from './componenets/ChooseUs'
+// import Animation from './componenets/Animation'
+// import Animation2 from './componenets/Animation2'
+// import Boxes from './componenets/Boxes'
+// import Footer from './componenets/Footer'
 function App() {
  
-
+const [nextScene, setNextScene] = useState(false);
   return (
     <>
-    <navbar/>
-   <button/>
-
-    </>
+   
+    <Navbar/>
+ {/* <Animation2/>
+<ChooseUs/>
+   <Animation/>
+   <Boxes/>
+   <Footer/> */}
+   
+   </>
   )
 }
 
