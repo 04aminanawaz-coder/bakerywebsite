@@ -3,11 +3,11 @@ import './App.css'
 import Navbar from './componenets/Navbar'
 
 
-// import ChooseUs from './componenets/ChooseUs'
-// import Animation from './componenets/Animation'
+import ChooseUs from './componenets/ChooseUs'
+import Animation from './componenets/Animation'
 import Animation2 from './componenets/Animation2'
-// import Boxes from './componenets/Boxes'
-// import Footer from './componenets/Footer'
+import Boxes from './componenets/Boxes'
+import Footer from './componenets/Footer'
 function App() {
  
 const [nextScene, setNextScene] = useState(false);
@@ -16,11 +16,11 @@ const [nextScene, setNextScene] = useState(false);
    
     <Navbar/>
      <Animation2/>
- {/*
+ 
 <ChooseUs/>
    <Animation/>
    <Boxes/>
-   <Footer/> */}
+   <Footer/> 
    
    </>
   )
