@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import "animate.css";
 import Button from "./Button";
 import Order from "./Order";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -50,7 +51,7 @@ function Navbar() {
 
         {/* Navbar */}
         <nav className="box1 w-1/3 h-full flex justify-between items-center p-2">
-          <a href="/" className="group relative overflow-hidden h-8 inline-flex">
+          <Link to="/home" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
               {animateText("Home")}
             </span>
@@ -58,9 +59,9 @@ function Navbar() {
             <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
               {animateText("Home")}
             </span>
-          </a>
+          </Link>
 
-          <a href="/" className="group relative overflow-hidden h-8 inline-flex">
+          <Link to="/menu" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
               {animateText("Menu")}
             </span>
@@ -68,7 +69,7 @@ function Navbar() {
             <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
               {animateText("Menu")}
             </span>
-          </a>
+          </Link>
 
           <a href="/" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
