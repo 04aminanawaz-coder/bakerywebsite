@@ -10,6 +10,7 @@ import Menu from "./componenets/Menu";
 import AboutUs from "./componenets/AboutUs";
 
 
+
 function Home() {
   return (
     <>
@@ -19,6 +20,7 @@ function Home() {
       <Animation />
       <Boxes />
       <Footer />
+  
      
     </>
   );
