@@ -51,7 +51,7 @@ function Navbar() {
 
         {/* Navbar */}
         <nav className="box1 w-1/3 h-full flex justify-between items-center p-2">
-          <Link to="/home" className="group relative overflow-hidden h-8 inline-flex">
+          <Link to="/" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
               {animateText("Home")}
             </span>
@@ -71,7 +71,7 @@ function Navbar() {
             </span>
           </Link>
 
-          <a href="/" className="group relative overflow-hidden h-8 inline-flex">
+          <Link to="/aboutus" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
               {animateText("About Us")}
             </span>
@@ -79,7 +79,7 @@ function Navbar() {
             <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
               {animateText("About Us")}
             </span>
-          </a>
+          </Link>
 
           <a href="/" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">

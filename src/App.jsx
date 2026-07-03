@@ -7,6 +7,7 @@ import Animation from "./componenets/Animation";
 import Boxes from "./componenets/Boxes";
 import Footer from "./componenets/Footer";
 import Menu from "./componenets/Menu";
+import AboutUs from "./componenets/AboutUs";
 
 
 function Home() {
@@ -18,6 +19,7 @@ function Home() {
       <Animation />
       <Boxes />
       <Footer />
+     
     </>
   );
 }
@@ -27,6 +29,7 @@ function App() {
   <Routes>
   <Route path="/" element={<Home />} />
   <Route path="/menu" element={<Menu />} />
+  <Route path="/aboutus" element={<AboutUs />} />
 </Routes>
   );
 }
