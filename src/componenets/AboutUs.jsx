@@ -167,8 +167,8 @@ export default function AboutUs() {
 
         <button>
           
-
-    <Button text="Contact Us" width="w-40 h-12"/>
+<Link to="/contactpage">
+    <Button text="Contact Us" width="w-40 h-12"/></Link>
         </button>
       </section>
     </div>

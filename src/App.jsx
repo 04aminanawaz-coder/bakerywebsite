@@ -8,6 +8,7 @@ import Boxes from "./componenets/Boxes";
 import Footer from "./componenets/Footer";
 import Menu from "./componenets/Menu";
 import AboutUs from "./componenets/AboutUs";
+import ContactPage from "./componenets/ContactPage";
 
 
 
@@ -21,6 +22,7 @@ function Home() {
       <Boxes />
       <Footer />
   
+
      
     </>
   );
@@ -32,6 +34,7 @@ function App() {
   <Route path="/" element={<Home />} />
   <Route path="/menu" element={<Menu />} />
   <Route path="/aboutus" element={<AboutUs />} />
+  <Route path="/contactpage" element={<ContactPage/>} />
 </Routes>
   );
 }

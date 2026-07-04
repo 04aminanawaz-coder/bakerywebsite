@@ -81,7 +81,7 @@ function Navbar() {
             </span>
           </Link>
 
-          <a href="/" className="group relative overflow-hidden h-8 inline-flex">
+          <Link to="/contactpage" className="group relative overflow-hidden h-8 inline-flex">
             <span className="flex font2 font-medium text-lg">
               {animateText("Contact Us")}
             </span>
@@ -89,7 +89,7 @@ function Navbar() {
             <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
               {animateText("Contact Us")}
             </span>
-          </a>
+          </Link>
         </nav>
 
         {/* Buttons */}
