@@ -7,7 +7,7 @@ export default function AboutUs() {
   return (
     <>
      <Navbar/>
-    <div className="bg-red-700 text-[#f8f0cc] mt-20 ">
+    <div className="bg-red-700 text-[#f8f0cc] mt-18 ">
    
 
       {/* HERO SECTION */}

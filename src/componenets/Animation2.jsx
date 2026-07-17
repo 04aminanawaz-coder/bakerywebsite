@@ -1,16 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Button from "./Button";
 
 export default function Animation2() {
   const sectionRef = useRef(null);
 
+  const [screenSize, setScreenSize] = useState({
+    width: window.innerWidth,
+    height: window.innerHeight,
+  });
+
   const [image, setImage] = useState("/images/jump.png");
   const [showButton, setShowButton] = useState(false);
   const [showItems, setShowItems] = useState(false);
   const [showWelcome, setShowWelcome] = useState(false);
 
-  // Used to force Framer Motion to restart
   const [animationKey, setAnimationKey] = useState(0);
 
   const bakeryImages = [
@@ -22,14 +26,58 @@ export default function Animation2() {
     "/images/pizza.png",
   ];
 
+    const [sectionHeight, setSectionHeight] = useState(window.innerHeight);
+useEffect(() => {
+  const handleResize = () => {
+    setScreenSize({
+      width: window.innerWidth,
+      height: window.innerHeight,
+    });
+
+    if (sectionRef.current) {
+      setSectionHeight(sectionRef.current.offsetHeight);
+    }
+  };
+
+  handleResize();
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+
+
+  const itemCount = screenSize.width < 640 ? 40 : screenSize.width < 1024 ? 70 : 100;
+  
+  // FIX 1: Lowered from 0.5 to 0.38 so feet don't get cut off
+const characterY =
+  screenSize.width < 640
+    ? screenSize.height * 0.26
+    : screenSize.height * 0.42;
+
+  // FIX 2: Moved to 0.35 so character stands closer to the center button
+const characterX = showButton 
+? screenSize.width * 0.35
+ : screenSize.width * 0.6;
+ 
+
+  const bakeryItems = useMemo(() => {
+    return Array.from({ length: itemCount }, () => ({
+      x: Math.random(),
+      startY: -300 - Math.random() * 500,
+      endOffset: 40 + Math.random() * 100,
+      rotate: Math.random() * 360,
+      delay: Math.random(),
+      image: bakeryImages[Math.floor(Math.random() * bakeryImages.length)],
+    }));
+  }, [itemCount, screenSize.width]);
+
   useEffect(() => {
     let timers = [];
 
     const resetAnimation = () => {
       timers.forEach(clearTimeout);
-
       setAnimationKey((k) => k + 1);
-
       setImage("/images/jump.png");
       setShowButton(false);
       setShowItems(false);
@@ -38,25 +86,18 @@ export default function Animation2() {
 
     const startAnimation = () => {
       resetAnimation();
-
       timers = [
         setTimeout(() => setImage("/images/air.png"), 1000),
         setTimeout(() => setImage("/images/land.png"), 3000),
         setTimeout(() => setImage("/images/walk1.png"), 4000),
-
         setTimeout(() => setShowButton(true), 5000),
-
         setTimeout(() => setImage("/images/hi1.png"), 5500),
-
         setTimeout(() => setImage("/images/press.png"), 7000),
-
         setTimeout(() => {
           setShowButton(false);
           setShowItems(true);
         }, 7500),
-
         setTimeout(() => setImage("/images/stand.png"), 7500),
-
         setTimeout(() => setShowWelcome(true), 9500),
       ];
     };
@@ -69,9 +110,7 @@ export default function Animation2() {
           resetAnimation();
         }
       },
-      {
-        threshold: 0.6,
-      }
+      { threshold: 0.6 }
     );
 
     if (sectionRef.current) {
@@ -82,26 +121,36 @@ export default function Animation2() {
       observer.disconnect();
       timers.forEach(clearTimeout);
     };
-  }, []);  return (
+  }, []);
+
+  return (
     <div
       ref={sectionRef}
-      className="relative w-full min-h-screen overflow-hidden bg-[#f8f0cc]"
+      className="relative w-full min-h-[75vh] sm:min-h-[85vh] md:min-h-screen overflow-hidden bg-[#f8f0cc]"
     >
       {/* Character */}
       <motion.img
         key={`character-${animationKey}`}
         src={image}
-        alt=""
-        className="absolute w-32 z-20 object-contain"
+        alt="Bakery mascot"
+        className="
+          absolute
+        top-6
+          w-28
+          sm:w-24
+          md:w-28
+          lg:w-32
+          xl:w-36
+          object-contain
+          z-20
+        "
         initial={{
-          x: window.innerWidth,
-          y: -300,
+          x: screenSize.width + 100,
+          y: -250,
         }}
         animate={{
-          x: showButton
-            ? window.innerWidth * 0.3
-            : window.innerWidth * 0.6,
-          y: window.innerHeight * 0.55,
+          x: characterX,
+          y: characterY,
         }}
         transition={{
           duration: 4,
@@ -109,14 +158,22 @@ export default function Animation2() {
         }}
       />
 
-      {/* Button */}
+      {/* Press Button */}
       {showButton && (
         <motion.div
           key={`button-${animationKey}`}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="absolute left-1/2 top-[55%] -translate-x-1/2 z-10"
+          className="
+            absolute
+            left-1/2
+            -translate-x-1/2
+            top-[40%]
+            sm:top-[45%]
+            md:top-[45%]
+            z-10
+          "
         >
           <Button text="Press" />
         </motion.div>
@@ -124,24 +181,27 @@ export default function Animation2() {
 
       {/* Bakery Rain */}
       {showItems &&
-        Array.from({ length: 100 }).map((_, i) => (
+        bakeryItems.map((item, i) => (
           <motion.img
             key={`item-${animationKey}-${i}`}
-            src={bakeryImages[i % bakeryImages.length]}
+            src={item.image}
             alt=""
-            className="absolute w-14 z-30"
+            className="absolute w-8 sm:w-10 md:w-12 lg:w-14 z-30"
             initial={{
-              x: Math.random() * window.innerWidth,
-              y: -300 - Math.random() * 500,
-              rotate: 0,
+              x: item.x * screenSize.width,
+              y: item.startY,
+              rotate: item.rotate,
             }}
-            animate={{
-              y: window.innerHeight - (50 + Math.random() * 120),
-              rotate: 720,
-            }}
+         animate={{
+
+  y: sectionHeight - item.endOffset,
+
+  rotate: item.rotate + 720,
+
+}}
             transition={{
               duration: 2,
-              delay: Math.random(),
+              delay: item.delay,
               type: "spring",
               bounce: 0.4,
             }}
@@ -152,18 +212,44 @@ export default function Animation2() {
       {showWelcome && (
         <motion.div
           key={`popup-${animationKey}`}
-          initial={{
-            scale: 0,
-            opacity: 0,
-          }}
-          animate={{
-            scale: 1,
-            opacity: 1,
-          }}
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-700 font1 p-10 rounded-3xl shadow-2xl"
+         className="
+  absolute
+  top-[30%]
+  sm:top-[30%]
+  md:top-[35%]
+  left-1/2
+  -translate-x-1/2
+  -translate-y-1/2
+  bg-red-700
+  rounded-3xl
+  shadow-2xl
+  w-[60%]
+  max-w-3xl
+  max-h-[80vh]
+  overflow-auto
+  px-5 py-6
+  sm:px-8 sm:py-8
+  md:px-10 md:py-10
+  text-center
+  font1
+  z-40
+"
+          
         >
-          <h1 className="text-5xl font-bold text-[#f8f0cc]">
+          <h1
+            className="
+              text-2xl
+              sm:text-3xl
+              md:text-4xl
+              lg:text-5xl
+              font-bold
+              text-[#f8f0cc]
+              leading-tight
+            "
+          >
             Welcome To My Bakery
           </h1>
         </motion.div>

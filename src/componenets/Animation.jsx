@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Button from "./Button";
-
+import { Link } from "react-router-dom";
 const Animation = () => {
   const [image, setImage] = useState("/images/fall.png");
   const [showBubble, setShowBubble] = useState(false);
@@ -141,7 +141,7 @@ const Animation = () => {
 
       {/* BUBBLE (FIXED Z-INDEX) */}
       {showBubble && (
-       <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="absolute right-10 bottom-40 max-w-md rounded-3xl border-2  bg-[#f8f0cc]   p-6 shadow-xl" > <h3 className="mb-3 text-2xl font-bold text-red-700"> Feeling hungry today? 🍞 </h3> <p> What are you in the mood for today? Sweet bun, chicken bun, tea cake? </p> <button > <Button text="ExploreMenu" width="w-40 font2 text-lg h-12" /> </button> </motion.div>
+       <motion.div initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }} className="absolute font2 right-10 bottom-40 max-w-md rounded-3xl border-2  bg-[#f8f0cc]   p-6 shadow-xl" > <h3 className="mb-3 text-2xl font-bold text-red-700 font1"> Feeling hungry today? 🍞 </h3> <p > What are you in the mood for today? Sweet bun, chicken bun, tea cake? </p> <button > <Link to="/menu"> <Button text="ExploreMenu" width="w-40 font2 text-lg h-12" /> </Link> </button> </motion.div>
       )}
     </div>
   );
