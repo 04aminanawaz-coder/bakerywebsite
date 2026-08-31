@@ -10,11 +10,11 @@ function ContactPage() {
 
       {/* 🟣 HEADER */}
       <Navbar/>
-       <div className="bg-red-700 text-[#f8f0cc] mt-18 ">
+       <div className="bg-red-700 text-[#f8f0cc] mt-16 ">
    
 
       {/* HERO SECTION */}
-      <section className="relative h-[70vh] flex items-center justify-center text-center  bg-[url('/images/RabiaBanner2.png')] bg-cover bg-center">
+      <section className="relative h-[70vh] flex items-center justify-center text-center   bg-[url('/images/RabiaBanner2.png')] bg-cover bg-center">
         <div className="absolute inset-0 bg-black/50 "></div>
 
         <div className="relative z-10 px-6">

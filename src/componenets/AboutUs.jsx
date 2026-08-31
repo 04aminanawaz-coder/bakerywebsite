@@ -7,7 +7,7 @@ export default function AboutUs() {
   return (
     <>
      <Navbar/>
-    <div className="bg-red-700 text-[#f8f0cc] mt-18 ">
+    <div className="bg-red-700 text-[#f8f0cc] mt-16 ">
    
 
       {/* HERO SECTION */}
@@ -25,11 +25,11 @@ export default function AboutUs() {
       </section>
 
       {/* STORY SECTION */}
-      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2  gap-10 items-center">
+      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
         <img
           src="/images/Rabia3.png"
           alt="Our Story"
-          className=" w-100 "
+          className="w-50 max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto md:mx-0 rounded-lg"
         />
 
         <div>
@@ -118,7 +118,8 @@ export default function AboutUs() {
       <section className="max-w-6xl mx-auto px-6 py-20 text-[#f8f0cc]">
         <h2 className="text-4xl font1  font-bold text-center mb-10">Gallery</h2>
 
-        <div className="grid md:grid-cols-4 gap-30  ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 md:gap-6 ">
+        
           {[
             "/images/bread.png",
             "/images/pizza.png",
@@ -128,16 +129,17 @@ export default function AboutUs() {
             "/images/cookie.png",
              "/images/bread2.png",
             "/images/bread3.png",
-          
+       
             
           ].map((img, i) => (
             <img
               key={i}
               src={img}
-              className="rounded-xl w-32 h-32  object-contain hover:scale-105 transition"
+              className="w-32 aspect-square object-contain rounded-xl hover:scale-105 transition"
               alt="gallery"
             />
           ))}
+         
         </div>
       </section>
 
@@ -151,7 +153,7 @@ export default function AboutUs() {
             "Their cakes are amazing and beautifully designed!",
           ].map((review, i) => (
             <div key={i} className="p-6 bg-white rounded-xl shadow">
-              <p className="text-gray-700">“{review}”</p>
+              <p className="text-gray-700">"{review}"</p>
               <div className="mt-3 text-yellow-500">★★★★★</div>
             </div>
           ))}

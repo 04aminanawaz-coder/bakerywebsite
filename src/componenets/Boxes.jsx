@@ -89,12 +89,12 @@ const Boxes = () => {
   return (
     <div
       ref={ref}
-      className="relative w-full min-h-[100dvh] flex justify-center items-end overflow-visible bg-[#f8f0cc] px-2"
+      className="relative w-full h-[45dvh] sm:h-[50dvh] md:h-[55dvh] lg:h-auto lg:min-h-[100dvh] flex justify-center items-end overflow-visible bg-[#f8f0cc] px-2"
     >
       {/* Character */}
       <motion.img
         src="/images/pp3.png"
-        className="w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 relative z-20 pb-[3%]"
+        className="w-16 sm:w-20 md:w-24 lg:w-28 xl:w-32 relative z-20 "
         animate={characterControls}
       />
 

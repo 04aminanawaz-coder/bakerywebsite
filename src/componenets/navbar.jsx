@@ -8,253 +8,207 @@ function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  /* ===================== Scroll, Resize & Keyboard ===================== */
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 20);
 
     const handleResize = () => {
-      if (window.innerWidth >= 768) {
-        setMenuOpen(false);
-      }
+      if (window.innerWidth >= 1024) setMenuOpen(false);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    // PRO FIX: Allow closing via Escape key
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape" && menuOpen) setMenuOpen(false);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
     window.addEventListener("resize", handleResize);
+    window.addEventListener("keydown", handleKeyDown);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
+  }, [menuOpen]);
 
-  // FIX 1: Added useEffect to lock background scrolling on mobile when menu is open
+  /* ===================== Lock Body Scroll ===================== */
   useEffect(() => {
     if (menuOpen) {
       document.body.style.overflow = "hidden";
+      document.body.style.touchAction = "none";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
     }
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.touchAction = "";
+    };
   }, [menuOpen]);
 
+  /* ===================== Animated Text ===================== */
   const animateText = (text) =>
     text.split("").map((char, i) => (
       <span
         key={i}
-        className="inline-block transition-transform duration-700 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-full cursor-pointer"
-        style={{
-          transitionDelay: `${i * 20}ms`,
-        }}
+        className="inline-block transition-transform duration-700 ease-[cubic-bezier(.76,0,.24,1)] group-hover:-translate-y-full"
+        style={{ transitionDelay: `${i * 20}ms` }}
       >
         {char === " " ? "\u00A0" : char}
       </span>
     ));
 
+  /* ===================== Navigation Links ===================== */
+  const links = [
+    { to: "/", label: "Home" },
+    { to: "/menu", label: "Menu" },
+    { to: "/aboutus", label: "About Us" },
+    { to: "/contactpage", label: "Contact Us" },
+  ];
+
   return (
     <>
-      <div
-        className={`fixed top-0 left-0 z-50 w-full h-[72px]
+      {/* ===================== NAVBAR ===================== */}
+      <header
+        className={`fixed top-0 left-0 z-50 w-full
         bg-[#f8f0cc]/95 backdrop-blur-md
-        flex items-center justify-between
         border-b transition-all duration-500
         ${
           scrolled
             ? "border-red-700 shadow-[0_10px_35px_rgba(0,0,0,.08)]"
             : "border-transparent"
         }`}
+        // PRO FIX: Safe area for notched phones
+        style={{ paddingTop: 'env(safe-area-inset-top)' }}
       >
-        {/* Logo */}
-        <div className="flex items-center h-full gap-2 px-4 shrink-0">
-          <img
-            className="w-12 h-12 object-contain"
-            src="./images/Rabia3.png"
-            alt="Rabia's Kitchen Logo"
-          />
-          <p className="font1 text-lg md:text-xl font-bold whitespace-nowrap">
-            Rabia's Kitchen
-          </p>
+        <div className="max-w-[1600px] mx-auto h-16 sm:h-[70px] lg:h-[74px] flex items-center justify-between px-4 sm:px-6 lg:px-8 xl:px-10">
+          
+          {/* ===================== Logo ===================== */}
+          <Link to="/" className="flex items-center gap-2 shrink-0">
+            <img
+              src="/images/Rabia3.png"
+              alt="Rabia's Kitchen"
+              className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 object-contain"
+            />
+            <span className="font1 text-base sm:text-lg lg:text-xl font-bold whitespace-nowrap">
+              Rabia's Kitchen
+            </span>
+          </Link>
+
+          {/* ===================== Desktop Navigation ===================== */}
+          <nav className="hidden lg:flex items-center gap-5 xl:gap-8 2xl:gap-12">
+            {links.map(({ to, label }) => (
+              <Link
+                key={to}
+                to={to}
+                className="group relative overflow-hidden h-8 inline-flex"
+              >
+                <span className="flex font2 text-[17px] font-medium tracking-wide">
+                  {animateText(label)}
+                </span>
+                <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
+                  {animateText(label)}
+                </span>
+              </Link>
+            ))}
+          </nav>
+
+          {/* ===================== Desktop Buttons ===================== */}
+          <div className="hidden lg:flex items-center gap-1 xl:gap-2 scale-[0.78] xl:scale-90 2xl:scale-100 origin-right">
+            <Order />
+            <Button />
+          </div>
+
+          {/* ===================== Hamburger ===================== */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label={menuOpen ? "Close Menu" : "Open Menu"}
+            aria-expanded={menuOpen}
+            className="lg:hidden flex flex-col justify-center items-center w-12 h-12 z-[80]"
+          >
+            <span className={`block w-7 h-[2px] bg-red-700 transition-all duration-300 origin-center ${menuOpen ? "rotate-45 translate-y-[7px]" : ""}`} />
+            <span className={`block w-7 h-[2px] bg-red-700 my-[6px] transition-all duration-300 ${menuOpen ? "opacity-0 scale-x-0" : ""}`} />
+            <span className={`block w-7 h-[2px] bg-red-700 transition-all duration-300 origin-center ${menuOpen ? "-rotate-45 -translate-y-[7px]" : ""}`} />
+          </button>
         </div>
+      </header>
 
-        {/* Desktop Navbar */}
-        <nav className="hidden md:flex items-center gap-8 lg:gap-12">
-          <Link to="/" className="group relative overflow-hidden h-8 inline-flex">
-            <span className="flex font2 text-[17px] font-medium tracking-wide">
-              {animateText("Home")}
-            </span>
-            <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
-              {animateText("Home")}
-            </span>
-          </Link>
-
-          <Link to="/menu" className="group relative overflow-hidden h-8 inline-flex">
-            <span className="flex font2 text-[17px] font-medium tracking-wide">
-              {animateText("Menu")}
-            </span>
-            <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
-              {animateText("Menu")}
-            </span>
-          </Link>
-
-          <Link to="/aboutus" className="group relative overflow-hidden h-8 inline-flex">
-            <span className="flex font2 text-[17px] font-medium tracking-wide">
-              {animateText("About Us")}
-            </span>
-            <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
-              {animateText("About Us")}
-            </span>
-          </Link>
-
-          <Link to="/contactpage" className="group relative overflow-hidden h-8 inline-flex">
-            <span className="flex font2 text-[17px] font-medium tracking-wide">
-              {animateText("Contact Us")}
-            </span>
-            <span className="absolute left-0 top-full flex font1 text-xl font-extrabold">
-              {animateText("Contact Us")}
-            </span>
-          </Link>
-        </nav>
-
-        {/* Desktop Buttons */}
-        <div className="hidden lg:flex items-center gap-2 pr-6 scale-[0.82] origin-right">
-          <Order />
-          <Button />
-        </div>
-
-        {/* Hamburger Button */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          // FIX 2: Increased z-index so it's always clickable above the overlay
-          className="md:hidden flex flex-col justify-center items-center w-12 h-full mr-4 z-[80]"
-        >
-          <span
-            className={`block w-7 h-[2px] bg-red-700 transition-all duration-300 ${
-              menuOpen ? "rotate-45 translate-y-[7px]" : ""
-            }`}
-          ></span>
-          <span
-            className={`block w-7 h-[2px] bg-red-700 my-[6px] transition-all duration-300 ${
-              menuOpen ? "opacity-0" : ""
-            }`}
-          ></span>
-          <span
-            className={`block w-7 h-[2px] bg-red-700 transition-all duration-300 ${
-              menuOpen ? "-rotate-45 -translate-y-[7px]" : ""
-            }`}
-          ></span>
-        </button>
-      </div>
-
-      {/* ===================== MOBILE OVERLAY ===================== */}
+      {/* ===================== Overlay ===================== */}
       <div
         onClick={() => setMenuOpen(false)}
-        // FIX 3: Bumped z-index to ensure it covers the main fixed navbar properly
-        className={`fixed inset-0 bg-black/55 backdrop-blur-sm z-[60] transition-all duration-700 md:hidden ${
-          menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+        className={`fixed inset-0 bg-black/55 backdrop-blur-sm z-[60] transition-all duration-500 lg:hidden ${
+          menuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
       />
 
-      {/* ===================== MOBILE DRAWER ===================== */}
-      <div
+      {/* ===================== Mobile / Tablet Drawer ===================== */}
+      <aside
         className={`fixed top-0 right-0 h-screen
-        w-[85%] max-w-[380px]
-        bg-[#fff8e8]
-        rounded-l-[40px]
+        w-[85%] sm:w-[70%] md:w-[58%] max-w-[420px]
+        bg-[#fff8e8] rounded-l-[32px] sm:rounded-l-[40px]
         shadow-[0_0_60px_rgba(0,0,0,.25)]
-        // FIX 4: Bumped z-index above overlay
-        z-[70]
+        z-[70] overflow-y-auto will-change-transform
         transition-transform duration-500 ease-[cubic-bezier(.22,1,.36,1)]
-        md:hidden
+        lg:hidden flex flex-col 
         ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+        // PRO FIX: Accessibility attributes for screen readers
+        role="dialog"
+        aria-modal="true"
+        aria-label="Navigation Menu"
+        // PRO FIX: Safe area for iPads/iPhones
+        style={{ 
+          paddingTop: 'env(safe-area-inset-top)', 
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          paddingRight: 'env(safe-area-inset-right)' 
+        }}
       >
-        {/* Header */}
-        <div className="flex justify-between items-center px-8 h-24 border-b border-[#e5c99c]">
+        {/* ===================== Drawer Header ===================== */}
+        <div className="sticky top-0 bg-[#fff8e8] z-20 flex justify-between items-center px-6 sm:px-8 h-20 sm:h-24 border-b border-[#e5c99c]">
           <div>
-            <h2 className="font1 text-2xl text-red-700">Rabia's Kitchen</h2>
-            <p className="text-xs tracking-[4px] font2 uppercase mt-1">
-              Freshly Baked
-            </p>
+            <h2 className="font1 text-xl sm:text-2xl text-red-700">Rabia's Kitchen</h2>
+            <p className="text-[10px] sm:text-xs tracking-[4px] uppercase font2 mt-1">Freshly Baked</p>
           </div>
           <button
             onClick={() => setMenuOpen(false)}
-            className="w-10 h-10 rounded-full bg-red-700 text-[#f8f0cc] text-xl hover:bg-red-800 hover:rotate-90 transition-all duration-300 flex items-center justify-center"
+            className="w-10 h-10 rounded-full bg-red-700 text-[#f8f0cc] text-xl flex justify-center items-center hover:bg-red-800 hover:rotate-90 active:scale-90 transition-all duration-300"
+            aria-label="Close menu"
           >
             ✕
           </button>
         </div>
 
-        {/* Links */}
-        <div className="flex flex-col px-8 py-10 gap-8">
-          <Link
-            to="/"
-            onClick={() => setMenuOpen(false)}
-            className="group flex items-center justify-between border-b border-[#ead8b5] pb-4"
-          >
-            <span className="font1 text-3xl hover:text-red-700 group-hover:translate-x-2 transition duration-300">
-              Home
-            </span>
-            <span className="opacity-0 text-red-700 group-hover:opacity-100 group-hover:translate-x-2 transition duration-300">
-              →
-            </span>
-          </Link>
+        {/* ===================== Drawer Links ===================== */}
+        <nav className="flex flex-col px-6 sm:px-8 py-8 gap-7">
+          {links.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              onClick={() => setMenuOpen(false)}
+              className="group flex justify-between items-center border-b border-[#ead8b5] pb-4"
+            >
+              <span className="font1 text-2xl sm:text-3xl group-hover:text-red-700 group-hover:translate-x-2 transition-all duration-300">
+                {label}
+              </span>
+              <span className="text-red-700 opacity-0 text-xl group-hover:opacity-100 group-hover:translate-x-2 transition-all duration-300">
+                →
+              </span>
+            </Link>
+          ))}
+        </nav>
 
-          <Link
-            to="/menu"
-            onClick={() => setMenuOpen(false)}
-            className="group flex items-center justify-between border-b border-[#ead8b5] pb-4"
-          >
-            <span className="font1 text-3xl hover:text-red-700 group-hover:translate-x-2 transition duration-300">
-              Menu
-            </span>
-            <span className="opacity-0 text-red-700 group-hover:opacity-100 group-hover:translate-x-2 transition duration-300">
-              →
-            </span>
-          </Link>
-
-          <Link
-            to="/aboutus"
-            onClick={() => setMenuOpen(false)}
-            className="group flex items-center justify-between border-b border-[#ead8b5] pb-4"
-          >
-            <span className="font1 text-3xl hover:text-red-700 group-hover:translate-x-2 transition duration-300">
-              About Us
-            </span>
-            <span className="opacity-0 text-red-700 group-hover:opacity-100 group-hover:translate-x-2 transition duration-300">
-              →
-            </span>
-          </Link>
-
-          <Link
-            to="/contactpage"
-            onClick={() => setMenuOpen(false)}
-            className="group flex items-center justify-between border-b border-[#ead8b5] pb-4"
-          >
-            <span className="font1 text-3xl hover:text-red-700 group-hover:translate-x-2 transition duration-300">
-              Contact Us
-            </span>
-            <span className="opacity-0 text-red-700 group-hover:opacity-100 group-hover:translate-x-2 transition duration-300">
-              →
-            </span>
-          </Link>
-        </div>
-
-        {/* Bottom Buttons */}
-        {/* FIX 5: Changed invalid 'bottom-34' to 'bottom-36' (9rem) to fix layout breaking */}
-        <div className="absolute bottom-36 left-0 w-full flex justify-center gap-5 px-8">
-          <div className="scale-[0.82] origin-left">
-            <Order />
+        {/* ===================== Drawer Footer ===================== */}
+        {/* PRO FIX: mt-auto pushes this to the bottom safely */}
+        <div className="mt-auto px-6 sm:px-8 pt-8 pb-10">
+          <div className="flex justify-center gap-4 mb-6">
+            <div className="scale-75 sm:scale-[0.82]"><Order /></div>
+            <div className="scale-75 sm:scale-[0.82]"><Button /></div>
           </div>
-          <div className="w-28 scale-90 origin-left">
-            <Button />
-          </div>
-        </div>
-        
-        {/* FIX 6: Adjusted bottom text spacing so it doesn't overlap the buttons */}
-        <div className="absolute bottom-12 left-8">
-          <p className="text-sm font2 tracking-[3px] uppercase">
+          <p className="text-center text-[11px] sm:text-sm font2 tracking-[3px] uppercase opacity-70">
             Fresh • Homemade • Delicious
           </p>
         </div>
-      </div>
+      </aside>
     </>
   );
 }

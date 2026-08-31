@@ -26,45 +26,40 @@ export default function Animation2() {
     "/images/pizza.png",
   ];
 
-    const [sectionHeight, setSectionHeight] = useState(window.innerHeight);
-useEffect(() => {
-  const handleResize = () => {
-    setScreenSize({
-      width: window.innerWidth,
-      height: window.innerHeight,
-    });
+  const [sectionHeight, setSectionHeight] = useState(700);
 
-    if (sectionRef.current) {
-      setSectionHeight(sectionRef.current.offsetHeight);
-    }
-  };
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
 
-  handleResize();
+      if (sectionRef.current) {
+        setSectionHeight(sectionRef.current.offsetHeight);
+      }
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
-
-
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const itemCount = screenSize.width < 640 ? 40 : screenSize.width < 1024 ? 70 : 100;
   
-  // FIX 1: Lowered from 0.5 to 0.38 so feet don't get cut off
-const characterY =
-  screenSize.width < 640
-    ? screenSize.height * 0.26
-    : screenSize.height * 0.42;
+  // Calculates position based on the actual container height
+  const characterY = sectionHeight * 0.45;
 
-  // FIX 2: Moved to 0.35 so character stands closer to the center button
-const characterX = showButton 
-? screenSize.width * 0.35
- : screenSize.width * 0.6;
- 
+  const characterX = showButton 
+    ? screenSize.width * 0.30
+    : screenSize.width * 0.6;
 
   const bakeryItems = useMemo(() => {
     return Array.from({ length: itemCount }, () => ({
       x: Math.random(),
-      startY: -300 - Math.random() * 500,
+      // TWEAKED: Increased start distance slightly (-200 to -500) so the rain 
+      // has a satisfying fall time on full-height laptop/desktop screens.
+      startY: -200 - Math.random() * 300, 
       endOffset: 40 + Math.random() * 100,
       rotate: Math.random() * 360,
       delay: Math.random(),
@@ -124,26 +119,26 @@ const characterX = showButton
   }, []);
 
   return (
+  
     <div
       ref={sectionRef}
-      className="relative w-full min-h-[75vh] sm:min-h-[85vh] md:min-h-screen overflow-hidden bg-[#f8f0cc]"
+      className="
+        relative 
+        w-full 
+        h-[60vh] min-h-[500px] max-h-[700px]   /* 1. Mobile/Small iPads: Smaller medium box */
+        md:h-[70vh] md:max-h-[800px]           /* 2. Standard iPads: Medium box */
+        lg:h-[75vh] lg:max-h-[900px]           /* 3. iPad Pro 12.9/13 (1024px): Still a medium box!*/
+        xl:h-screen xl:min-h-0 xl:max-h-none   /* 4. Laptops/Big Screens (1280px+): FULL HEIGHT */
+        overflow-hidden 
+        bg-[#f8f0cc]
+      "
     >
       {/* Character */}
       <motion.img
         key={`character-${animationKey}`}
         src={image}
         alt="Bakery mascot"
-        className="
-          absolute
-        top-6
-          w-28
-          sm:w-24
-          md:w-28
-          lg:w-32
-          xl:w-36
-          object-contain
-          z-20
-        "
+        className="absolute top-6 w-28 sm:w-24 md:w-28 lg:w-32 xl:w-36 object-contain z-20"
         initial={{
           x: screenSize.width + 100,
           y: -250,
@@ -165,15 +160,7 @@ const characterX = showButton
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.4 }}
-          className="
-            absolute
-            left-1/2
-            -translate-x-1/2
-            top-[40%]
-            sm:top-[45%]
-            md:top-[45%]
-            z-10
-          "
+          className="absolute left-1/2 -translate-x-1/2 top-[48%] z-10"
         >
           <Button text="Press" />
         </motion.div>
@@ -192,13 +179,10 @@ const characterX = showButton
               y: item.startY,
               rotate: item.rotate,
             }}
-         animate={{
-
-  y: sectionHeight - item.endOffset,
-
-  rotate: item.rotate + 720,
-
-}}
+            animate={{
+              y: sectionHeight - item.endOffset,
+              rotate: item.rotate + 720,
+            }}
             transition={{
               duration: 2,
               delay: item.delay,
@@ -215,41 +199,9 @@ const characterX = showButton
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
-         className="
-  absolute
-  top-[30%]
-  sm:top-[30%]
-  md:top-[35%]
-  left-1/2
-  -translate-x-1/2
-  -translate-y-1/2
-  bg-red-700
-  rounded-3xl
-  shadow-2xl
-  w-[60%]
-  max-w-3xl
-  max-h-[80vh]
-  overflow-auto
-  px-5 py-6
-  sm:px-8 sm:py-8
-  md:px-10 md:py-10
-  text-center
-  font1
-  z-40
-"
-          
+          className="absolute top-[35%] left-1/2 -translate-x-1/2 -translate-y-1/2 bg-red-700 rounded-3xl shadow-2xl w-[60%] max-w-3xl max-h-[80vh] overflow-auto px-5 py-6 sm:px-8 sm:py-8 md:px-10 md:py-10 text-center font1 z-40"
         >
-          <h1
-            className="
-              text-2xl
-              sm:text-3xl
-              md:text-4xl
-              lg:text-5xl
-              font-bold
-              text-[#f8f0cc]
-              leading-tight
-            "
-          >
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-[#f8f0cc] leading-tight">
             Welcome To My Bakery
           </h1>
         </motion.div>

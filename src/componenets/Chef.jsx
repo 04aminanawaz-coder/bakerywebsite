@@ -54,10 +54,12 @@ export default function Chef() {
   };
 
   return (  
-    <div className="relative flex items-end object-cover left-40 " >
+    <div className="relative flex items-end object-cover left-4 sm:left-8 lg:left-10 xl:left-40">
 
       {showBubble && (
-        <div className="absolute left-32  -top-28 w-72 animate-bubble z-20">
+        /* CHANGED: Used -left-14 on large screens. This centers the wide bubble exactly over the Chef's head 
+           so it doesn't stretch out and cover the menu. Made it even smaller on Nest Hubs (lg:w-44). */
+        <div className="absolute left-8 sm:left-12 lg:-left-4 lg:w-44 xl:-left-14 xl:w-72 -top-10 sm:-top-12 lg:-top-16 xl:-top-28 animate-bubble z-20">
           <img
             src={bubbleImage}
             alt=""
@@ -69,10 +71,9 @@ export default function Chef() {
       <img
         src={frames[currentFrame]}
         alt="Chef"
-        className="w-44 object-cover  "
+        className="w-24 sm:w-32 lg:w-36 xl:w-44 object-cover"
       />
 
-      {/* Hidden button so MenuPaper can trigger the animation */}
       <button
         id="chefAnimationButton"
         onClick={playAnimation}

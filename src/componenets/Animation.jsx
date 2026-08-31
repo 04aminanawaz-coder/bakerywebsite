@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import Button from "./Button";
 import { Link } from "react-router-dom";
+
 const Animation = () => {
   const [image, setImage] = useState("/images/fall.png");
   const [showBubble, setShowBubble] = useState(false);
@@ -9,6 +10,7 @@ const Animation = () => {
   const [animKey, setAnimKey] = useState(0);
   const [boxOpen, setBoxOpen] = useState(false);
   const [showCharacter, setShowCharacter] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
 
   const sectionRef = useRef(null);
   const timersRef = useRef([]);
@@ -29,10 +31,6 @@ const Animation = () => {
     setBoxOpen(false);
     setShowCharacter(true);
 
-    const screenEnd = window.innerWidth;
-    const characterWidth = 160;
-    const stopPosition = screenEnd - characterWidth - 350;
-
     const addTimer = (fn, t) => {
       const id = setTimeout(fn, t);
       timersRef.current.push(id);
@@ -46,26 +44,41 @@ const Animation = () => {
     addTimer(() => setImage("/images/getup.png"), 1600);
     addTimer(() => setImage("/images/stand.png"), 2400);
 
-    // MOVE
-    addTimer(() => {
-      setImage("/images/walk.png");
-      setPosition(stopPosition);
-    }, 3200);
+    if (isMobile) {
+      // MOBILE: fall → stand → disappear → bubble pops up
+      addTimer(() => setShowCharacter(false), 4000);
+      addTimer(() => setShowBubble(true), 4500);
+    } else {
+      // DESKTOP: your exact original walk logic
+      const screenEnd = window.innerWidth;
+      const characterWidth = 160;
+      const stopPosition = screenEnd - characterWidth - 350;
 
-    // SHOW BUBBLE + SIT
-    addTimer(() => {
-      setImage("/images/stand.png");
-      setPosition(stopPosition);
-      setShowBubble(true);
-    }, 9000);
+      // MOVE
+      addTimer(() => {
+        setImage("/images/walk.png");
+        setPosition(stopPosition);
+      }, 3200);
 
-    // HIDE CHARACTER AFTER SITTING
-    addTimer(() => {
-      setShowCharacter(false);
-    }, 11000);
+      // SHOW BUBBLE + SIT
+      addTimer(() => {
+        setImage("/images/stand.png");
+        setPosition(stopPosition);
+        setShowBubble(true);
+      }, 9000);
+
+      // HIDE CHARACTER AFTER SITTING
+      addTimer(() => {
+        setShowCharacter(false);
+      }, 11000);
+    }
   };
 
   useEffect(() => {
+    const checkSize = () => setIsMobile(window.innerWidth < 768);
+    checkSize();
+    window.addEventListener("resize", checkSize);
+
     const observer = new IntersectionObserver(
       (entries) => {
         const entry = entries[0];
@@ -80,10 +93,11 @@ const Animation = () => {
     if (sectionRef.current) observer.observe(sectionRef.current);
 
     return () => {
+      window.removeEventListener("resize", checkSize);
       observer.disconnect();
       timersRef.current.forEach(clearTimeout);
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <div
