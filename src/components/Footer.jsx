@@ -98,7 +98,7 @@ export default function Footer() {
             <button
               className="hover:scale-105 w-36 sm:w-40 transition duration-300 font2 self-start sm:self-auto"
             >
-              <Button text="Sign in" width="h-12" />
+              <Button text="Sign in" width="w-full h-12" />
             </button>
           </div>
 
