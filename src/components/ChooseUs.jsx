@@ -23,7 +23,7 @@ const ChooseUs = () => {
                 </p>
             </div>
             
-            <p className='w-full h-auto font2 tracking-wide p-4 sm:p-8 md:p-12 pb-0 pt-0 text-sm sm:text-base md:text-lg'>
+            <div className='w-full h-auto font2 tracking-wide p-4 sm:p-8 md:p-12 pb-0 pt-0 text-sm sm:text-base md:text-lg'>
                 <strong>A Letter from Our Kitchen to Your Table</strong>
                 <br /><br />
                 Dear Friend,
@@ -45,7 +45,7 @@ const ChooseUs = () => {
                         />
                     </div>
                 </div>
-            </p>
+            </div>
         </div>
     </div>
     </>

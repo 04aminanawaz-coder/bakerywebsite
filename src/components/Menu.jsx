@@ -2,7 +2,6 @@ import Footer from "./Footer";
 import Button from "./Button";
 import Chef from "./Chef";
 import MenuPaper from "./MenuPaper";
-import { Link } from "react-router-dom";
 import menuSections from "./menuData";
 
 export default function Menu() {
@@ -23,14 +22,11 @@ export default function Menu() {
         <p className="mt-3 text-red-700 mb-4 font2 tracking-wide">
           Hope so you like our tasty and delicious menu              
         </p>
-        <button>
-          <Link to="/">
-            <Button
-              text="Back To Home"
-              width="w-44 h-12 font2 text-lg"
-            />
-          </Link>
-        </button>
+        <Button
+          text="Back To Home"
+          href="/"
+          width="w-44 h-12 font2 text-lg"
+        />
       </section>
 
       <Footer />

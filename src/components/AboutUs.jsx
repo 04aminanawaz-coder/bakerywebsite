@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 export default function AboutUs() {
@@ -167,11 +166,7 @@ export default function AboutUs() {
           Fresh bread, cakes, and pastries waiting for you.
         </p>
 
-        <button>
-          
-<Link to="/contactpage">
-    <Button text="Contact Us" width="w-40 h-12"/></Link>
-        </button>
+        <Button text="Contact Us" href="/contactpage" width="w-40 h-12"/>
       </section>
     </div>
     <Footer/>

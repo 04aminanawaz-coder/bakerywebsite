@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
 import './App.css'
-import Navbar from "./componenets/Navbar";
-import Animation2 from "./componenets/Animation2";
-import ChooseUs from "./componenets/ChooseUs";
-import Animation from "./componenets/Animation";
-import Boxes from "./componenets/Boxes";
-import Footer from "./componenets/Footer";
-import Menu from "./componenets/Menu";
-import AboutUs from "./componenets/AboutUs";
-import ContactPage from "./componenets/ContactPage";
+import Navbar from "./components/Navbar";
+import Animation2 from "./components/Animation2";
+import ChooseUs from "./components/ChooseUs";
+import Animation from "./components/Animation";
+import Boxes from "./components/Boxes";
+import Footer from "./components/Footer";
+import Menu from "./components/Menu";
+import AboutUs from "./components/AboutUs";
+import ContactPage from "./components/ContactPage";
 
 
 

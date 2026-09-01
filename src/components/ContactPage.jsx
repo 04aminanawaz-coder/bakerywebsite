@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Button from "./Button";
-import { Link } from "react-router-dom";
 function ContactPage() {
   return (
     <>
@@ -134,12 +133,8 @@ function ContactPage() {
               <h2 className="text-4xl font-bold font1">Visit Our Bakery Reviews</h2>
               <p className="mt-3 text-red-700 mb-4 font2 tracking-wide">
 Help you to know us better              </p>
-      
-              <button>
-                
-      <Link to="/">
-          <Button text="People Reviews" width='w-48 font2 text-lg heigh= h-12  ' /></Link>
-              </button>
+
+      <Button text="People Reviews" href="/" width='w-48 font2 text-lg heigh= h-12  ' />
             </section>
 
       <Footer/>
