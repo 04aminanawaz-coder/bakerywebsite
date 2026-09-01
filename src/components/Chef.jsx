@@ -53,10 +53,10 @@ export default function Chef() {
     }, 220);
   };
 
-  return (  
-    <div className="relative flex items-end object-cover left-40 " >
+  return (
+    <div className="relative flex items-end object-cover justify-center lg:justify-start shrink-0">
       {showBubble && (
-        <div className="absolute left-32  -top-28 w-72 animate-bubble z-20">
+        <div className="absolute left-1/2 sm:left-24 lg:left-32 -translate-x-1/2 sm:translate-x-0 -top-24 sm:-top-28 w-52 sm:w-72 animate-bubble z-20">
           <img
             src={bubbleImage}
             alt=""
@@ -68,7 +68,7 @@ export default function Chef() {
       <img
         src={frames[currentFrame]}
         alt="Chef"
-        className="w-44 object-cover  "
+        className="w-32 sm:w-40 lg:w-44 object-cover"
       />
 
       {/* Hidden button so MenuPaper can trigger the animation */}
