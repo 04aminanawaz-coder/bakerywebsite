@@ -11,7 +11,7 @@ export default function Button({
 }) {
   return (
     <>
-    <div className="btn relative ">
+    <div className="btn relative inline-block">
       <Link
         to={href}
         className={`border-[#f8f0cc] border hover:border-red-700 ${width}
